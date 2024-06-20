@@ -13,6 +13,11 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.22' // Verificați versiunea actuală pe site-ul Lombok
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+}
+
 
 test {
     useJUnitPlatform()
