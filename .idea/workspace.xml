@@ -4,21 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff6fbceb-82b4-45f4-842c-b3dbf06543e3" name="Changes" comment="Problem 1&#10;We would like to provide our customers the possibility to book tickets to our Cinema online. We have 100 seats in our Cinema numbered from 1 to 100. For simplicity, we can ignore booking a specific seat so a client can request several seats without specifying numbers. You need to build a small booking service that should&#10;Securely book one or several seats a client requested&#10;Return one error when the Cinema does not have enough free seats but the number is less than 100&#10;Return another error when a client tried to book more than 100 seats&#10;Please solve this with both optimistic and pessimistic locking primitives Java has; explain in which real-life case you would pick one over the other&#10;What is important in code&#10;How you address concurrency&#10;How you structure your code&#10;How you validate and handle errors&#10;How you handle multiple returns&#10;If the code is simple enough and easy to read&#10;Problem 2&#10;Write a program that will accept a large array of integers as input and will calculate the sum of all integers in 5 threads, then add the result together, returning the sum.&#10;Examples:&#10;Array: 23 45 67 89 12 34 56 78 90 1 &#10;Sum: 495">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/ArrayProblem/IntermediateSuma.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/Cinema/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/Cinema/OptimisticLocking.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/Cinema/PessimisticLocking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="ff6fbceb-82b4-45f4-842c-b3dbf06543e3" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/ArrayProblem/ArrayProblem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/ArrayProblem/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/ArrayProblem/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/Cynema/Cynema.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/Cynema/MainCynema.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/ArrayProblem/IntermediateSuma.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/ArrayProblem/IntermediateSuma.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/Cinema/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/Cinema/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/Cinema/OptimisticLocking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/Cinema/OptimisticLocking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/Cinema/PessimisticLocking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ro/developmentfactory/Cinema/PessimisticLocking.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -243,7 +234,7 @@
       <workItem from="1719142977030" duration="17224000" />
       <workItem from="1719221197900" duration="1596000" />
       <workItem from="1719316892442" duration="1036000" />
-      <workItem from="1719317946481" duration="10011000" />
+      <workItem from="1719317946481" duration="11584000" />
     </task>
     <task id="LOCAL-00001" summary="Other">
       <option name="closed" value="true" />
@@ -261,7 +252,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718885195347</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Changes">
+      <option name="closed" value="true" />
+      <created>1719328978730</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1719328978730</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -281,6 +280,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Other" />
     <MESSAGE value="Problem 1&#10;We would like to provide our customers the possibility to book tickets to our Cinema online. We have 100 seats in our Cinema numbered from 1 to 100. For simplicity, we can ignore booking a specific seat so a client can request several seats without specifying numbers. You need to build a small booking service that should&#10;Securely book one or several seats a client requested&#10;Return one error when the Cinema does not have enough free seats but the number is less than 100&#10;Return another error when a client tried to book more than 100 seats&#10;Please solve this with both optimistic and pessimistic locking primitives Java has; explain in which real-life case you would pick one over the other&#10;What is important in code&#10;How you address concurrency&#10;How you structure your code&#10;How you validate and handle errors&#10;How you handle multiple returns&#10;If the code is simple enough and easy to read&#10;Problem 2&#10;Write a program that will accept a large array of integers as input and will calculate the sum of all integers in 5 threads, then add the result together, returning the sum.&#10;Examples:&#10;Array: 23 45 67 89 12 34 56 78 90 1 &#10;Sum: 495" />
-    <option name="LAST_COMMIT_MESSAGE" value="Problem 1&#10;We would like to provide our customers the possibility to book tickets to our Cinema online. We have 100 seats in our Cinema numbered from 1 to 100. For simplicity, we can ignore booking a specific seat so a client can request several seats without specifying numbers. You need to build a small booking service that should&#10;Securely book one or several seats a client requested&#10;Return one error when the Cinema does not have enough free seats but the number is less than 100&#10;Return another error when a client tried to book more than 100 seats&#10;Please solve this with both optimistic and pessimistic locking primitives Java has; explain in which real-life case you would pick one over the other&#10;What is important in code&#10;How you address concurrency&#10;How you structure your code&#10;How you validate and handle errors&#10;How you handle multiple returns&#10;If the code is simple enough and easy to read&#10;Problem 2&#10;Write a program that will accept a large array of integers as input and will calculate the sum of all integers in 5 threads, then add the result together, returning the sum.&#10;Examples:&#10;Array: 23 45 67 89 12 34 56 78 90 1 &#10;Sum: 495" />
+    <MESSAGE value="Changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes" />
   </component>
 </project>

@@ -1,10 +1,13 @@
 package ro.developmentfactory.ArrayProblem;
 
+import lombok.Data;
 import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
+
+@Data
 @Getter
 public class IntermediateSuma implements Runnable {
 

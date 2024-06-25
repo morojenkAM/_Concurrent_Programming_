@@ -6,24 +6,16 @@ public class Main {
         OptimisticLocking optimisticLocking = new OptimisticLocking();
 
         // Testing pessimistic lock
-        Thread thread1 = new Thread(() -> {
-            pessimisticLocking.bookSeats(3);
-        });
-        Thread thread2 = new Thread(() -> {
-            pessimisticLocking.bookSeats(5);
-        });
+        Thread thread1 = new Thread(() -> pessimisticLocking.bookSeats(3));
+        Thread thread2 = new Thread(() -> pessimisticLocking.bookSeats(5));
 
         thread1.start();
         thread2.start();
 
         // Testing optimistic lock
-        Thread thread3 = new Thread(() -> {
-            optimisticLocking.bookSeats(4);
-        });
+        Thread thread3 = new Thread(() -> optimisticLocking.bookSeats(4));
 
-        Thread thread4 = new Thread(() -> {
-            optimisticLocking.bookSeats(6);
-        });
+        Thread thread4 = new Thread(() -> optimisticLocking.bookSeats(6));
         thread3.start();
         thread4.start();
 
@@ -34,7 +26,7 @@ public class Main {
             thread3.join();
             thread4.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         System.out.println("Available seats after bookings:");
