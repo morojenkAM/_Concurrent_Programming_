@@ -1,40 +1,28 @@
 package ro.developmentfactory.ArrayProblem;
 
-import ro.developmentfactory.ArrayProblem.ArrayProblem;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-    public static void main(String[] args) {
-        int numThreads = 5;
-        int[] ab = { 23, 45, 67, 89, 12, 34, 56, 78, 90, 1 };
-        int size = ab.length;
-        int segmentationSize = size / numThreads;
+        public static void main(String[] args) {
 
-        ArrayProblem problems[] = new ArrayProblem[numThreads];
-        ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+        IntermediateSuma problem = new IntermediateSuma();
 
-        for (int i = 0; i < numThreads; i++) {
-            int start = i * segmentationSize;
-            int end = (i == numThreads -1) ? size : start + segmentationSize;
-            int [] subArray = new int[end - start];
-            System.arraycopy(ab, start, subArray, 0, end - start);
-            problems[i] = new ArrayProblem(subArray);
-            executor.submit(problems[i]);
-        }
-        executor.shutdown();
+        executor.submit(problem);
+
         try {
-            executor.awaitTermination(60, TimeUnit.SECONDS);
+            if (!executor.awaitTermination(30, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
+            }
 
         }catch (InterruptedException e){
-            e.printStackTrace();
+            executor.shutdownNow();
+            Thread.currentThread().interrupt();
+            System.err.println("Main thread interrupted");
         }
-        int total = 0;
-        for (ArrayProblem problem : problems) {
-            total +=problem.getSum();
-        }
-        System.out.println("Sum = " +total);
-    };
+        System.out.println("Sum = " + problem.getTotalSum());
+    }
 }
