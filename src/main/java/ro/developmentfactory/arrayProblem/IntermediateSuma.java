@@ -1,28 +1,21 @@
 package ro.developmentfactory.arrayProblem;
 
-
+import lombok.Data;
 import lombok.Getter;
 
-import static java.util.Arrays.copyOfRange;
-
 @Getter
+@Data
 public class IntermediateSuma implements Runnable {
-    private static final int[] ab = { 23, 45, 67, 89, 12, 34, 56, 78, 90, 1 };
-    private static final int size = ab.length;
+    private final int[] array;
     private  int totalSum ;
 
     @Override
     public void run() {
-        arrayDivide();
+        calculateSum();
     }
 
-    private void arrayDivide() {
-        int[] arrayFirstPart = copyOfRange(ab, 0, size / 2);
-        int[] arraySecondPart = copyOfRange(ab, size / 2, size);
-
-        int sumFirstPart = getElementSum(arrayFirstPart);
-        int sumSecondPart = getElementSum(arraySecondPart);
-        this.totalSum = sumFirstPart + sumSecondPart;
+    private void calculateSum() {
+        this.totalSum = getElementSum(array);
     }
 
     private int getElementSum(int[] array) {

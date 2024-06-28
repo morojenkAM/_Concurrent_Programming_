@@ -12,23 +12,16 @@ public class OptimisticLocking {
         }
 
         int currentOccupiedSeats = occupiedSeats.get();
-        if (currentOccupiedSeats + numSeats <= totalSeats) {
-            // Atomic verification and update using optimistic locking
-            boolean reservationSuccessful = false;
-            while (!reservationSuccessful) {
-                if (occupiedSeats.compareAndSet(currentOccupiedSeats, currentOccupiedSeats + numSeats)) {
-                    System.out.println(numSeats + " seats reserved. Seats occupied now: " + occupiedSeats.get());
-                    reservationSuccessful = true; // Break the loop if successful
-                } else {
-                    throw new SeatsAlreadyReservedException ("Error: Seats already reserved by another thread.");
-                }
-            }
-        } else {
-            throw new NotEnoughSeatsException("Error: Not enough seats available.");
+        if (currentOccupiedSeats + numSeats > totalSeats) {
+            throw new SeatsAlreadyReservedException ("Error: There are no available seats to book.");
         }
-    }
 
+        while(!occupiedSeats.compareAndSet(currentOccupiedSeats, currentOccupiedSeats + numSeats)) {
+            currentOccupiedSeats = occupiedSeats.get();
+        }
+            }
     public int getAvailableSeats() {
         return totalSeats - occupiedSeats.get();
     }
-}
+    }
+

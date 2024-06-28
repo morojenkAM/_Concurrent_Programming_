@@ -14,12 +14,10 @@ public class PessimisticLocking {
             if (numSeats > totalSeats) {
                 throw new NotEnoughSeatsException("Error: Number of seats exceeds total seats");
             }
-            if (numSeats + occupiedSeats <= totalSeats) {
-                occupiedSeats += numSeats;
-                System.out.println(numSeats + " seats reserved. Seats occupied now: " + occupiedSeats);
-            } else {
+            if (numSeats + occupiedSeats > totalSeats) {
                 throw new SeatsAlreadyReservedException ("Error: Not enough seats available.");
             }
+            occupiedSeats += numSeats;
         } finally {
             lock.unlock();
         }
