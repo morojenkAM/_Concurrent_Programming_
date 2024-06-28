@@ -8,18 +8,17 @@ public class PessimisticLocking {
     private int occupiedSeats = 0;
     private final Lock lock = new ReentrantLock();
 
-    public void bookSeats(int numSeats) {
+    public void bookSeats(int numSeats) throws NotEnoughSeatsException,SeatsAlreadyReservedException {
         lock.lock(); // Pessimistic Locking starts here
         try {
             if (numSeats > totalSeats) {
-                System.out.println("Error: Number of seats exceeds total seats");
-                return;
+                throw new NotEnoughSeatsException("Error: Number of seats exceeds total seats");
             }
             if (numSeats + occupiedSeats <= totalSeats) {
                 occupiedSeats += numSeats;
                 System.out.println(numSeats + " seats reserved. Seats occupied now: " + occupiedSeats);
             } else {
-                System.out.println("Error: Not enough seats available.");
+                throw new SeatsAlreadyReservedException ("Error: Not enough seats available.");
             }
         } finally {
             lock.unlock();
