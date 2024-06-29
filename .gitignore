@@ -9,6 +9,7 @@ build/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
+.idea
 *.iws
 *.iml
 *.ipr
@@ -17,7 +18,6 @@ out/
 !**/src/test/**/out/
 .idea
 /out/
-.DS_Store
 
 ### Eclipse ###
 .apt_generated
