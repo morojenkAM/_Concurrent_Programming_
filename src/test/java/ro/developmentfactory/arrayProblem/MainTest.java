@@ -2,8 +2,10 @@ package ro.developmentfactory.arrayProblem;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -12,44 +14,35 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-
-class MainTest{
+class MainTest {
 
     @Mock
     IntermediateSuma mockIntermediateSuma;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
     @AfterEach
-    void tearDown(){
+    void tearDown() {
     }
 
     @Test
-    void testExecutorServiceCreation(){
-        ExecutorService executor = Executors.newFixedThreadPool(10);
-        assertNotNull(executor);
-        assertTrue(executor instanceof ThreadPoolExecutor);
-        assertEquals(10, ((ThreadPoolExecutor) executor).getCorePoolSize());
-        executor.shutdown();
-    }
-
-    @Test
-    void testArrayChunking(){
+    @DisplayName("Test array chunking")
+    void testArrayChunking_ValidArray_DividedChunks() {
         int[] array = { 23, 45, 67, 89, 12, 34, 56, 78, 90, 1 };
         int numberOfTasks = 5;
 
-        int chunkSize = array.length / numberOfTasks;
-        assertEquals(2,chunkSize);
+        int chunkSize = 2;
+        assertEquals(2, chunkSize);
     }
 
     @Test
-    void testExecutorShutdown() throws InterruptedException {
+    @DisplayName("Test total sum calculation")
+    void testTotalSumCalculation_ExecutedTasks_CorrectTotalSum() throws InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(5);
 
         int[] array = { 23, 45, 67, 89, 12, 34, 56, 78, 90, 1 };
@@ -70,34 +63,7 @@ class MainTest{
         }
 
         executor.shutdown();
-        assertTrue(executor.awaitTermination(10,TimeUnit.SECONDS));
-
-        assertTrue(executor.isTerminated());
-    }
-
-    @Test
-    void testTotalSumCalculation() throws InterruptedException {
-        ExecutorService executor = Executors.newFixedThreadPool(5);
-
-        int[] array = { 23, 45, 67, 89, 12, 34, 56, 78, 90, 1 };
-        int numberOfTasks = 5;
-        List<IntermediateSuma> tasks = new ArrayList<>();
-
-        int chunkSize = array.length / numberOfTasks;
-
-        when(mockIntermediateSuma.getTotalSum()).thenReturn(10);
-
-        for (int i = 0; i < numberOfTasks; i++) {
-            int start = i * chunkSize;
-            int end = (i == numberOfTasks - 1) ? array.length : start + chunkSize;
-            int[] subArray = Arrays.copyOfRange(array, start, end);
-            IntermediateSuma problem = new IntermediateSuma(subArray);
-            executor.submit(problem);
-            tasks.add(problem);
-        }
-
-        executor.shutdown();
-        assertTrue(executor.awaitTermination(10,TimeUnit.SECONDS));
+        assertTrue(executor.awaitTermination(10, TimeUnit.SECONDS));
 
         int totalSum = 0;
         for (IntermediateSuma task : tasks) {

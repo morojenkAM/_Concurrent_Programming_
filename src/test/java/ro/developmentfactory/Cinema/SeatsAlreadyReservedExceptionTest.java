@@ -1,5 +1,6 @@
 package ro.developmentfactory.Cinema;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -7,7 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SeatsAlreadyReservedExceptionTest {
         @Test
-        void SeatsAlreadyReservedExceptionPessimisticLocking() {
+        @DisplayName("Test Seats Already Reserved Exception - Pessimistic Locking")
+        void testSeatsAlreadyReservedException_PessimisticLocking_NotEnoughSeats() {
             PessimisticLocking bookingService = new PessimisticLocking(); // Instantiate the booking service
             int requestSeats = 105;
 
@@ -29,7 +31,8 @@ public class SeatsAlreadyReservedExceptionTest {
         }
 
         @Test
-        void SeatsAlreadyReservedExceptionOptimisticLocking() {
+        @DisplayName("Test Seats Already Reserved Exception - Optimistic Locking")
+        void testSeatsAlreadyReservedException_PessimisticLocking_SeatsAlreadyReserved() {
             OptimisticLocking bookingService = new OptimisticLocking(); // Instantiate the booking service
             int requestSeats = 105;
 

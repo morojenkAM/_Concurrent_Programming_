@@ -1,12 +1,14 @@
 package ro.developmentfactory.Cinema;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Main {
     @Test
-    void testPessimisticLock() throws InterruptedException {
+    @DisplayName("Test Pessimistic Locking: bookSeats with concurrent threads should update available seats correctly")
+    void testPessimisticLock_BookSeatsWithConcurrentThreads_UpdateAvailableSeatsCorrectly() throws InterruptedException {
         PessimisticLocking pessimisticLocking =  new PessimisticLocking();
         Thread thread1 = new Thread(() -> {
             try {
@@ -32,7 +34,8 @@ class Main {
     }
 
     @Test
-    void testOptimisticLock() throws InterruptedException {
+    @DisplayName("Test Optimistic Locking: bookSeats with concurrent threads should update available seats correctly")
+    void testOptimisticLock_BookSeatsWithConcurrentThreads_UpdateAvailableSeatsCorrectly() throws InterruptedException {
         OptimisticLocking optimisticLocking =  new OptimisticLocking();
         Thread thread3 = new Thread(() -> {
             try {

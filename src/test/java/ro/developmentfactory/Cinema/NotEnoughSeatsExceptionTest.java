@@ -1,5 +1,6 @@
 package ro.developmentfactory.Cinema;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,7 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class NotEnoughSeatsExceptionTest {
 
     @Test
-    void notEnoughSeatsExceptionPessimisticLocking() {
+    @DisplayName("Test Not Enough Seats Exception in Pessimistic Locking")
+    void notEnoughSeatsExceptionPessimisticLocking_BookMoreSeatsThanAvailable_ThrowNotEnoughSeatsException() {
         PessimisticLocking bookingService = new PessimisticLocking(); // Instantiate the booking service
         int requestSeats = 105;
 
@@ -30,7 +32,8 @@ public class NotEnoughSeatsExceptionTest {
     }
 
     @Test
-    void notEnoughSeatsExceptionOptimisticLocking() {
+    @DisplayName("Test Not Enough Seats Exception in Optimistic Locking")
+    void notEnoughSeatsExceptionOptimisticLocking_BookMoreSeatsThanAvailable_ThrowNotEnoughSeatsException() {
         OptimisticLocking bookingService = new OptimisticLocking(); // Instantiate the booking service
         int requestSeats = 105;
 
