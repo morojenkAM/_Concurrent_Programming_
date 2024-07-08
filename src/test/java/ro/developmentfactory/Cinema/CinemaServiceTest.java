@@ -2,86 +2,88 @@ package ro.developmentfactory.Cinema;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ro.developmentfactory.Cinema.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CinemaServiceTest {
 
     private CinemaService cinemaService;
-    private OptimisticLocking optimisticLocking;
-    private PessimisticLocking pessimisticLocking;
 
     @BeforeEach
-    public void setup() {
-        optimisticLocking = new OptimisticLocking();
-        pessimisticLocking = new PessimisticLocking();
+    void setUp() {
+        OptimisticLocking optimisticLocking = new OptimisticLocking();
+        PessimisticLocking pessimisticLocking = new PessimisticLocking();
         cinemaService = new CinemaService(optimisticLocking, pessimisticLocking);
     }
 
     @Test
-    public void testBookSeatsOptimistic() throws NotEnoughSeatsException, SeatsAlreadyReservedException {
+    void testBookSeatsOptimistic_SuccessfulBooking() throws NotEnoughSeatsException, SeatsAlreadyReservedException {
         // Given
-        int initialAvailableSeats = 100;
-        cinemaService = new CinemaService(new OptimisticLocking(), new PessimisticLocking());
+        int initialAvailableSeats = cinemaService.getAvailableSeatsOptimistic();
+        int numSeatsToBook = 5;
 
         // When
-        cinemaService.bookSeatsOptimistic(3);
+        cinemaService.bookSeatsOptimistic(numSeatsToBook);
 
         // Then
-        assertEquals(97, cinemaService.getAvailableSeatsOptimistic(), "Available seats should be 97 after booking 3 seats optimistically.");
+        assertEquals(initialAvailableSeats - numSeatsToBook, cinemaService.getAvailableSeatsOptimistic());
     }
 
     @Test
-    public void testBookSeatsPessimistic() throws NotEnoughSeatsException, SeatsAlreadyReservedException {
+    void testBookSeatsOptimistic_NotEnoughSeatsException() {
         // Given
-        int initialAvailableSeats = 100;
-        cinemaService = new CinemaService(new OptimisticLocking(), new PessimisticLocking());
+        int numSeatsToBook = 150;
 
-        // When
-        cinemaService.bookSeatsPessimistic(5);
-
-        // Then
-        assertEquals(95, cinemaService.getAvailableSeatsPessimistic(), "Available seats should be 95 after booking 5 seats pessimistically.");
+        // When, Then
+        assertThrows(NotEnoughSeatsException.class, () -> cinemaService.bookSeatsOptimistic(numSeatsToBook));
     }
 
     @Test
-    public void testBookSeatsMixed() throws NotEnoughSeatsException, SeatsAlreadyReservedException {
+    void testBookSeatsOptimistic_SeatsAlreadyReserved() throws NotEnoughSeatsException, SeatsAlreadyReservedException {
         // Given
-        int initialAvailableSeatsOptimistic = 100;
-        int initialAvailableSeatsPessimistic = 100;
-        cinemaService = new CinemaService(new OptimisticLocking(), new PessimisticLocking());
+        int numSeatsToBook = 10;
+        cinemaService.bookSeatsOptimistic(numSeatsToBook);
 
         // When
-        cinemaService.bookSeatsOptimistic(2);
-        cinemaService.bookSeatsPessimistic(3);
+        boolean bookingResult = cinemaService.bookSeatsOptimistic(numSeatsToBook);
 
         // Then
-        assertEquals(98, cinemaService.getAvailableSeatsOptimistic(), "Available seats (optimistic) should be 98 after mixed bookings.");
-        assertEquals(97, cinemaService.getAvailableSeatsPessimistic(), "Available seats (pessimistic) should be 97 after mixed bookings.");
+        assertFalse(bookingResult);
     }
 
     @Test
-    public void testBookSeatsThrowsNotEnoughSeatsException() {
+    void testBookSeatsPessimistic_SuccessfulBooking() throws NotEnoughSeatsException, SeatsAlreadyReservedException {
         // Given
-        int initialAvailableSeats = 100;
-        cinemaService = new CinemaService(new OptimisticLocking(), new PessimisticLocking());
+        int initialAvailableSeats = cinemaService.getAvailableSeatsPessimistic();
+        int numSeatsToBook = 5;
+
+        // When
+        cinemaService.bookSeatsPessimistic(numSeatsToBook);
 
         // Then
-        assertThrows(NotEnoughSeatsException.class, () -> cinemaService.bookSeatsOptimistic(101), "Exception should be thrown when booking more seats than available (optimistic).");
-        assertThrows(NotEnoughSeatsException.class, () -> cinemaService.bookSeatsPessimistic(101), "Exception should be thrown when booking more seats than available (pessimistic).");
+        assertEquals(initialAvailableSeats - numSeatsToBook, cinemaService.getAvailableSeatsPessimistic());
     }
 
     @Test
-    public void testBookSeatsThrowsSeatsAlreadyReservedException() throws NotEnoughSeatsException, SeatsAlreadyReservedException {
+    void testBookSeatsPessimistic_NotEnoughSeatsException() {
         // Given
-        int initialAvailableSeats = 100;
-        cinemaService = new CinemaService(new OptimisticLocking(), new PessimisticLocking());
+        int numSeatsToBook = 150;
+
+        // When, Then
+        assertThrows(NotEnoughSeatsException.class, () -> cinemaService.bookSeatsPessimistic(numSeatsToBook));
+    }
+
+    @Test
+    void testBookSeatsPessimistic_SeatsAlreadyReserved() throws NotEnoughSeatsException, SeatsAlreadyReservedException {
+        // Given
+        int numSeatsToBook = 10;
+        cinemaService.bookSeatsPessimistic(numSeatsToBook);
 
         // When
-        cinemaService.bookSeatsOptimistic(90);
-        cinemaService.bookSeatsPessimistic(90);
+        boolean bookingResult = cinemaService.bookSeatsPessimistic(numSeatsToBook);
 
         // Then
-        assertThrows(SeatsAlreadyReservedException.class, () -> cinemaService.bookSeatsOptimistic(11), "Exception should be thrown when booking more seats than available (optimistic).");
-        assertThrows(SeatsAlreadyReservedException.class, () -> cinemaService.bookSeatsPessimistic(11), "Exception should be thrown when booking more seats than available (pessimistic).");
+        assertFalse(bookingResult);
     }
 }

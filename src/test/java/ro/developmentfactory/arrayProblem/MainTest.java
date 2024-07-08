@@ -31,16 +31,6 @@ class MainTest {
     }
 
     @Test
-    @DisplayName("Test array chunking")
-    void testArrayChunking_ValidArray_DividedChunks() {
-        int[] array = { 23, 45, 67, 89, 12, 34, 56, 78, 90, 1 };
-        int numberOfTasks = 5;
-
-        int chunkSize = 2;
-        assertEquals(2, chunkSize);
-    }
-
-    @Test
     @DisplayName("Test total sum calculation")
     void testTotalSumCalculation_ExecutedTasks_CorrectTotalSum() throws InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(5);

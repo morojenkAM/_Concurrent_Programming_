@@ -15,9 +15,8 @@ public class StudentService {
         return students.stream().collect(groupingBy(Student::getDepartamentName, mapping(Student::getFirstName, toSet())));
     }
 
-    public String getTotalStudents(List<Student> students) {
-        long total = students.stream().count();
-        return "\n Total number of students: " + total;
+    public OptionalInt getTotalStudents(List<Student> students) {
+       return OptionalInt.of((int)students.stream().count());
     }
 
     public OptionalInt getMaxAgeOptional(List<Student> students) {

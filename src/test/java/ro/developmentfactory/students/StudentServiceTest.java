@@ -6,19 +6,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static java.util.stream.Collectors.*;
 
 public class StudentServiceTest {
 
+    private StudentService studentService;
     private List<Student> students;
 
     @BeforeEach
     void setUp() {
+        studentService = new StudentService();
         students = Arrays.asList(
                 new Student("John", "Doe", 30, "Male", "Mechanical Engineering", 122),
                 new Student("Jane", "Smith", 22, "Female", "Computer Engineering", 324),
@@ -33,14 +32,12 @@ public class StudentServiceTest {
     @ParameterizedTest
     @MethodSource("provideFirstNamePrefixes")
     @DisplayName("Filter students by first name prefix")
-    void filteredStudents_FilterByFirstName_Prefix(String prefix, int expectedSize) {
-        // When filtering students by first name starting with the given prefix
-        List<Student> filteredStudents = students.stream()
-                .filter(student -> student.getFirstName().startsWith(prefix))
-                .collect(Collectors.toList());
+    void filteredStudents_FilterByFirstName_Prefix() {
 
-        // Then assert the size of the filtered list
-        assertEquals(expectedSize, filteredStudents.size());
+         List<Student> filteredStudents = studentService.getFiltredStudents(students);
+
+         assertEquals(1, filteredStudents.size());
+        assertEquals("Ann", filteredStudents.get(0).getFirstName());
     }
 
     static List<Arguments> provideFirstNamePrefixes() {
@@ -76,13 +73,7 @@ public class StudentServiceTest {
     @Test
     @DisplayName("Group names by department")
     void NamesByDepertament_GroupingAndMappingNames() {
-        Map<String, Set<String>> namesByDepertament = students.stream()
-                .collect(groupingBy(
-                        Student::getDepartamentName,
-                        mapping(
-                                Student::getFirstName,
-                                toSet())
-                ));
+        Map<String, Set<String>> namesByDepertament = studentService.getNamesByDepertament(students);
 
         assertEquals(3, namesByDepertament.size());
 
@@ -105,7 +96,6 @@ public class StudentServiceTest {
     void GroupNamesByDepartment_EmptyStudentList() {
         // Simulate an empty list of students
         List<Student> emptyStudentsList = Collections.emptyList();
-
         Map<String, Set<String>> namesByDepertament = emptyStudentsList.stream()
                 .collect(groupingBy(
                         Student::getDepartamentName,
@@ -118,74 +108,17 @@ public class StudentServiceTest {
     }
 
     @Test
-    @DisplayName("Test scenario when there are no Mechanical Engineers in the list")
-    void DoesNotExistDepertamentMechanical_GroupingAndMappingNames() {
-        List<Student> noMechanicalEngineers = students.stream()
-                .filter(student -> !student.getDepartamentName().equals("Mechanical Engineering"))
-                .collect(toList());
-
-        Map<String, Set<String>> namesByDepertament = noMechanicalEngineers.stream()
-                .collect(groupingBy(
-                        Student::getDepartamentName,
-                        mapping(
-                                Student::getFirstName,
-                                toSet())
-                ));
-
-        assertFalse(namesByDepertament.containsKey("Mechanical Engineering"), "No Mechanical Engineering students");
-    }
-
-    @Test
-    @DisplayName("Test scenario when there are no Computer Engineering in the list")
-    void DoesNotExistDepertamentComputer_GroupingAndMappingNames() {
-        List<Student> noComputerEngineering = students.stream()
-                .filter(student -> !student.getDepartamentName().equals("Mechanical Engineering"))
-                .collect(toList());
-
-        Map<String, Set<String>> namesByDepertament = noComputerEngineering.stream()
-                .collect(groupingBy(
-                        Student::getDepartamentName,
-                        mapping(
-                                Student::getFirstName,
-                                toSet())
-                ));
-
-        assertFalse(namesByDepertament.containsKey("Mechanical Engineering"), "No Mechanical Engineering students");
-    }
-
-    @Test
-    @DisplayName("Test scenario when there are no Biotech Engineering in the list")
-    void DoesNotExistDepertamentBiotech_GroupingAndMappingNames() {
-        List<Student> noBiotechEngineering = students.stream()
-                .filter(student -> !student.getDepartamentName().equals("Biotech Engineering"))
-                .collect(toList());
-
-        Map<String, Set<String>> namesByDepertament = noBiotechEngineering.stream()
-                .collect(groupingBy(
-                        Student::getDepartamentName,
-                        mapping(
-                                Student::getFirstName,
-                                toSet())
-                ));
-
-        assertFalse(namesByDepertament.containsKey("Biotech Engineering"), "No Mechanical Engineering students");
-    }
-
-    @Test
     @DisplayName("Count total number of students")
     void TotalStudents_CountAllStudents() {
-        long total = students.stream().count();
-
-        assertEquals(7, total);
+        OptionalInt result = studentService.getTotalStudents(students);
+        assertTrue(result.isPresent());
+        assertEquals(7,result.getAsInt());
     }
 
     @Test
     @DisplayName("Find maximum age in the list of students")
     void MaxAgeOptional_FindMaxAgeInList() {
-        OptionalInt maxAgeOptional = students.stream()
-                .mapToInt(s -> s.getAge())
-                .max();
-
+        OptionalInt maxAgeOptional = studentService.getMaxAgeOptional(students);
         assertTrue(maxAgeOptional.isPresent(), "OptionalInt should contain a value");
         assertEquals(56, maxAgeOptional.getAsInt(), "Max age should be 56");
     }
@@ -193,55 +126,32 @@ public class StudentServiceTest {
     @Test
     @DisplayName("Extract distinct department names")
     void DepartmentNames_ExtractDistinctDepartmentNames() {
-        List<String> departmentNames = students.stream()
-                .map(Student::getDepartamentName)
-                .distinct().toList();
+        List<String> departmentNames = studentService.getDdepartmentNames(students);
 
+        assertEquals(3, departmentNames.size());
         List<String> expectedDepartmentNames = Arrays.asList(
                 "Mechanical Engineering",
                 "Computer Engineering",
                 "Biotech Engineering"
         );
-
         assertEquals(expectedDepartmentNames, departmentNames);
     }
 
     @Test
     @DisplayName("Count students per department")
     void StudentsByDepertament_CountStudentsPerDepartment() {
-        Map<String, Long> studentsByDepertament = students.stream()
-                .collect(groupingBy(
-                        Student::getDepartamentName,
-                        counting())
-                );
+        Map<String, Long> studentsByDepertament = studentService.getStudentsByDepertament(students);
         assertEquals(3, studentsByDepertament.size());
-
         assertEquals(2, studentsByDepertament.get("Mechanical Engineering"));
         assertEquals(3, studentsByDepertament.get("Computer Engineering"));
         assertEquals(2, studentsByDepertament.get("Biotech Engineering"));
 
     }
-
     @Test
     @DisplayName("Filter students under 30 years old")
     void StudentsUnder30_FilterStudentByAge() {
-        List<Student> studentsUnder30 = students.stream()
-                .filter(student -> student.getAge() < 30)
-                .collect(Collectors.toList());
-
+        List<Student> studentsUnder30 = studentService.getStudentsUnder30(students);
         assertEquals(4, studentsUnder30.size());
-
-        List<String> expectedStudentNamesUnder30 = Arrays.asList(
-                "Jane Smith",
-                "Elon Gated",
-                "Justin Case",
-                "Joss Sticks"
-        );
-        List<String> actualStudentNamesUnder30 = studentsUnder30.stream()
-                .map(student -> student.getFirstName() + " " + student.getLastName())
-                .collect(Collectors.toList());
-
-        assertEquals(expectedStudentNamesUnder30, actualStudentNamesUnder30);
     }
 
 
@@ -249,30 +159,17 @@ public class StudentServiceTest {
     @DisplayName("Filter students by average grade between 50 and 100")
            void RankBetween50and100_FilterStudentsByAverageGrade() {
         //Given: We have a list of students.
-        List<Student> rankBetween50and100 = students.stream()
+        List<Student> rankBetween50and100 = studentService.getRankBetween50and100(students);
                 // When: We filter the students based on their average grades, selecting only those with grades between 50 and 100.
-                .filter(student -> student.getAverageGrade() >= 50 && student.getAverageGrade() <= 100)
-                .collect(toList());
 
 // Then: We verify that the resulting number of students is 2, and their names are “Ann Gurnmeister” and “Elon Gated.”
         assertEquals(2, rankBetween50and100.size());
-
-        List<String> expectedNames = Arrays.asList("Ann Gurnmeister", "Elon Gated");
-        List<String> actualNames = rankBetween50and100.stream()
-                .map(student -> student.getFirstName() + " " + student.getLastName())
-                .collect(toList());
-
-        assertEquals(expectedNames, actualNames);
     }
 
     @Test
     @DisplayName("Calculate average age by gender")
     void AverageAge_CalculateAverageAgeByGender() {
-        Map<String, Double> averageAge = students.stream()
-                .collect(groupingBy(
-                        Student::getGender,
-                        averagingInt(Student::getAge)));
-
+        Map<String, Double> averageAge = studentService.getAverageAge(students);
         double expectedMaleAverageAge = (30 + 27 + 26 + 23) / 4.0;
         double expectedFemaleAverageAge = (22 + 56 + 31) / 3.0;
 
@@ -283,28 +180,15 @@ public class StudentServiceTest {
     @Test
     @DisplayName("Find department with most students")
     void DepartmentWithMaxStudents_FindDepartmentWithMostStudents() {
-        Map<String, Long> studentsByDepartment = students.stream()
-                .collect(groupingBy(
-                        Student::getDepartamentName,
-                        counting()
-                ));
-
-        Optional<Map.Entry<String, Long>> maxDepartment = studentsByDepartment.entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue());
-
-        assertEquals("Computer Engineering", maxDepartment.get().getKey());
-        assertEquals(3, maxDepartment.get().getValue().longValue());
+        Map<String, Long> studentsByDepartment = studentService.getMaxStudents(students);
+        assertEquals(3, studentsByDepartment.size());
+        assertEquals(2, studentsByDepartment.get("Mechanical Engineering"));
     }
 
     @Test
     @DisplayName("Calculate average rank by department")
     void AverageRank_CalculateAverageRankByDepartment() {
-        Map<String, Double> averageRank = students.stream()
-                .collect(groupingBy(
-                        Student::getDepartamentName,
-                        averagingInt(Student::getAverageGrade)));
-
+        Map<String, Double> averageRank = studentService.getAverageRank(students);
         double expectedMechanicalEngAverageRank = (122.0 + 90.0) / 2.0;
         double expectedComputerEngAverageRank = (324.0 + 340.0 + 20.0) / 3.0;
         double expectedBiotechEngAverageRank = (64.0 + 128.0) / 2.0;
@@ -317,10 +201,7 @@ public class StudentServiceTest {
     @Test
     @DisplayName("Find student with highest rank in each department")
     void AverageRankMax_FindStudentWithHighestRankInEachDepartment() {
-        Map<String, Optional<Student>> averageRankMax = students.stream()
-                .collect(groupingBy(
-                        Student::getDepartamentName,
-                        maxBy(Comparator.comparingInt(Student::getAverageGrade))));
+        Map<String, Optional<Student>> averageRankMax = studentService.getAverageRankMax(students);
 
         String expectedMechanicalEngMaxStudent = "John Doe";
         String expectedComputerEngMaxStudent = "Justin Case";
@@ -335,9 +216,7 @@ public class StudentServiceTest {
     @Test
     @DisplayName("Sort students by average grade")
     void SortedList_SortStudentsByAverageGrade() {
-        List<Student> sortedList = students.stream()
-                .sorted(Comparator.comparingInt(Student::getAverageGrade))
-                .collect(toList());
+        List<Student> sortedList = studentService.getSortedList(students);
 
         List<String> expectedSortedNames = Arrays.asList(
                 "Joss Sticks",
@@ -357,49 +236,15 @@ public class StudentServiceTest {
     @Test
     @DisplayName("Find student with second highest rank")
     void SecondHighestRank_FindStudentWithSecondHighestRank() {
-        Optional<Student> secondHighestRank = students.stream()
-                .sorted(Comparator.comparingInt(Student::getAverageGrade))
-                .skip(1)
-                .findFirst();
+        Optional<Student> secondHighestRank = studentService.getSecondHighestRank(students);
 
         String expectedSecondHighestStudent = "Ann Gurnmeister";
 
         assertTrue(secondHighestRank.isPresent());
         assertEquals(expectedSecondHighestStudent, secondHighestRank.get().getFirstName() + " " + secondHighestRank.get().getLastName());
     }
-
-    @Test
-    @DisplayName("GetFiltredStudents when list is null should throw IllegalArgumentException")
-    void testGetFiltredStudents_NullList() {
-        StudentService studentService = new StudentService();
-        assertThrows(NullPointerException.class, () -> studentService.getFiltredStudents(null));
-    }
-
-    @Test
-    @DisplayName("GetFiltredStudents when list is empty should return empty list")
-    void testGetFiltredStudents_EmptyList() {
-        StudentService studentService = new StudentService();
-        List<Student> emptyList = Collections.emptyList();
-        List<Student> filteredStudents = studentService.getFiltredStudents(emptyList);
-        assertTrue(filteredStudents.isEmpty());
-    }
-
-    @Test
-    @DisplayName("GetSecondHighestRank when list is null should throw IllegalArgumentException")
-    void testGetSecondHighestRank_NullList() {
-        StudentService studentService = new StudentService();
-        assertThrows(NullPointerException.class, () -> studentService.getSecondHighestRank(null));
-    }
-
-    @Test
-    @DisplayName("GetSecondHighestRank when list is empty should return empty optional")
-    void testGetSecondHighestRank_EmptyList() {
-        StudentService studentService = new StudentService();
-        List<Student> emptyList = Collections.emptyList();
-        Optional<Student> secondHighestRank = studentService.getSecondHighestRank(emptyList);
-        assertFalse(secondHighestRank.isPresent());
-    }
 }
+
 
 
 

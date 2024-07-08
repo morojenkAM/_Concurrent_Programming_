@@ -21,7 +21,7 @@ public class Main {
         Map<String, Set<String>> namesByDepertament = studentService.getNamesByDepertament(students);
         System.out.println("Names by Depertament : " + namesByDepertament);
 
-        String totalStudents = studentService.getTotalStudents(students);
+        OptionalInt totalStudents = studentService.getTotalStudents(students);
         System.out.println(totalStudents);
 
         OptionalInt maxAgeOptional = studentService.getMaxAgeOptional(students);
