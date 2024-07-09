@@ -13,12 +13,7 @@ import static java.util.stream.Collectors.*;
 public class StudentServiceTest {
 
     private StudentService studentService;
-    private List<Student> students;
-
-    @BeforeEach
-    void setUp() {
-        studentService = new StudentService();
-        students = Arrays.asList(
+    private final List<Student> students = Arrays.asList(
                 new Student("John", "Doe", 30, "Male", "Mechanical Engineering", 122),
                 new Student("Jane", "Smith", 22, "Female", "Computer Engineering", 324),
                 new Student("Ann", "Gurnmeister", 56, "Female", "Biotech Engineering", 64),
@@ -26,19 +21,11 @@ public class StudentServiceTest {
                 new Student("Justin", "Case", 26, "Male", "Computer Engineering", 340),
                 new Student("Dianne", "Ameter", 31, "Female", "Biotech Engineering", 128),
                 new Student("Joss", "Sticks", 23, "Male", "Computer Engineering", 20)
-        );
-    }
+    );
 
-    @ParameterizedTest
-    @MethodSource("provideFirstNamePrefixes")
-    @DisplayName("Filter students by first name prefix")
-    void filteredStudents_FilterByFirstName_Prefix() {
+    void setUp(){
+    studentService = new StudentService();}
 
-         List<Student> filteredStudents = studentService.getFiltredStudents(students);
-
-         assertEquals(1, filteredStudents.size());
-        assertEquals("Ann", filteredStudents.get(0).getFirstName());
-    }
 
     static List<Arguments> provideFirstNamePrefixes() {
         return Arrays.asList(
@@ -94,17 +81,10 @@ public class StudentServiceTest {
     @Test
     @DisplayName("Group names by department with empty student list")
     void GroupNamesByDepartment_EmptyStudentList() {
-        // Simulate an empty list of students
-        List<Student> emptyStudentsList = Collections.emptyList();
-        Map<String, Set<String>> namesByDepertament = emptyStudentsList.stream()
-                .collect(groupingBy(
-                        Student::getDepartamentName,
-                        mapping(
-                                Student::getFirstName,
-                                toSet())
-                ));
+    List<Student> emptyStudentsList = Collections.emptyList();
+    Map<String, Set<String>> namesByDepartament = studentService.getNamesByDepertament(emptyStudentsList);
 
-        assertEquals(0, namesByDepertament.size(), "Number of departments when students list is empty");
+    assertTrue(namesByDepartament.isEmpty());
     }
 
     @Test

@@ -12,15 +12,21 @@ public class CinemaService {
 
     // Method to book seats using optimistic locking
     public boolean bookSeatsOptimistic(int numSeats) throws NotEnoughSeatsException, SeatsAlreadyReservedException {
-        optimisticLocking.bookSeats(numSeats);
-        return false;
+        if (numSeats <= 0) {
+            throw new IllegalArgumentException("Number of seats to book must be greater than zero");
+        }
+        return optimisticLocking.bookSeats(numSeats);
     }
 
     // Method to book seats using pessimistic locking
     public boolean bookSeatsPessimistic(int numSeats) throws NotEnoughSeatsException, SeatsAlreadyReservedException {
+        if (numSeats <= 0) {
+            throw new IllegalArgumentException("Number of seats to book must be greater than zero");
+        }
         pessimisticLocking.bookSeats(numSeats);
-        return false;
+        return true;
     }
+
 
     // Method to get available seats using optimistic locking
     public int getAvailableSeatsOptimistic() {
@@ -31,4 +37,5 @@ public class CinemaService {
     public int getAvailableSeatsPessimistic() {
         return pessimisticLocking.getAvailableSeats();
     }
+
 }

@@ -84,6 +84,19 @@ public class CinemaServiceTest {
         boolean bookingResult = cinemaService.bookSeatsPessimistic(numSeatsToBook);
 
         // Then
-        assertFalse(bookingResult);
+        assertTrue(bookingResult);
+    }
+    @Test
+    void testBookSeatsOptimistic_InvalidNumberOfSeats() {
+        // Given, When, Then
+        assertThrows(IllegalArgumentException.class, () -> cinemaService.bookSeatsOptimistic(0));
+        assertThrows(IllegalArgumentException.class, () -> cinemaService.bookSeatsOptimistic(-5));
+    }
+
+    @Test
+    void testBookSeatsPessimistic_InvalidNumberOfSeats() {
+        // Given, When, Then
+        assertThrows(IllegalArgumentException.class, () -> cinemaService.bookSeatsPessimistic(0));
+        assertThrows(IllegalArgumentException.class, () -> cinemaService.bookSeatsPessimistic(-5));
     }
 }
