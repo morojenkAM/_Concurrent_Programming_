@@ -3,12 +3,9 @@ package ro.developmentfactory.students;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static java.util.stream.Collectors.*;
 
 public class StudentServiceTest {
 
@@ -22,7 +19,7 @@ public class StudentServiceTest {
                 new Student("Dianne", "Ameter", 31, "Female", "Biotech Engineering", 128),
                 new Student("Joss", "Sticks", 23, "Male", "Computer Engineering", 20)
     );
-
+@BeforeEach
     void setUp(){
     studentService = new StudentService();}
 
