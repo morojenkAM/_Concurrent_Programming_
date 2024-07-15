@@ -10,39 +10,43 @@ public class ArraySumServiceTest {
 
     @Test
     public void testCalculate_EmptyArray() {
-        ArraySumService arraySumService = new ArraySumService();
+        ArraySumService arraySumService = new ArraySumService(4);
         int[] array = {};
         int result = arraySumService.calculate(array);
         assertEquals(0, result);
+        arraySumService.shutdownExecutor();
     }
 
     @Test
     public void testCalculate_SingleElementZero() {
-        ArraySumService arraySumService = new ArraySumService();
+        ArraySumService arraySumService = new ArraySumService(4);
         int[] array = {0};
         int result = arraySumService.calculate(array);
         assertEquals(0, result);
+        arraySumService.shutdownExecutor();
     }
 
     @Test
     public void testCalculate_NegativeNumbers() {
-        ArraySumService arraySumService = new ArraySumService();
+        ArraySumService arraySumService = new ArraySumService(4);
         int[] array = {-1, -2, -3};
         int result = arraySumService.calculate(array);
         assertEquals(-6, result);
+        arraySumService.shutdownExecutor();
     }
 
     @Test
     public void testCalculate_PositiveNumbers() {
-        ArraySumService arraySumService = new ArraySumService();
+        ArraySumService arraySumService = new ArraySumService(4);
         int[] array = {1, 2, 3};
         int result = arraySumService.calculate(array);
         assertEquals(6, result);
+        arraySumService.shutdownExecutor();
     }
 
     @Test
     public void testCalculate_MixedNumbers() {
-        ArraySumService arraySumService = new ArraySumService();
+        ArraySumService arraySumService = new ArraySumService(4);
         int[] array = {-1, 2, 0, 5, -3};
         int result = arraySumService.calculate(array);
         assertEquals(3, result);
@@ -50,7 +54,7 @@ public class ArraySumServiceTest {
 
     @Test
     public void testCalculate_VeryLargeArray() {
-        ArraySumService arraySumService = new ArraySumService();
+        ArraySumService arraySumService = new ArraySumService(4);
         int[] array = new int[1_000_000];
         // We initialize the array with various values(for example, all elements can be 1)
         Arrays.fill(array, 1);
@@ -59,6 +63,7 @@ public class ArraySumServiceTest {
 
         int result = arraySumService.calculate(array);
         assertEquals(expectedSum, result);
+        arraySumService.shutdownExecutor();
     }
 
 

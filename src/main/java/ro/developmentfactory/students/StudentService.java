@@ -1,6 +1,7 @@
 package ro.developmentfactory.students;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 import static java.util.stream.Collectors.toSet;
@@ -12,11 +13,21 @@ public class StudentService {
     }
 
     public Map<String, Set<String>> getNamesByDepertament(List<Student> students) {
-        return students.stream().collect(groupingBy(Student::getDepartamentName, mapping(Student::getFirstName, toSet())));
+        if (students == null || students.isEmpty()) {
+            return null;
+        }
+        return students.stream()
+                .collect(Collectors.groupingBy(
+                        Student::getDepartamentName,
+                        Collectors.mapping(Student::getDepartamentName, Collectors.toSet())
+                ));
     }
 
     public OptionalInt getTotalStudents(List<Student> students) {
-       return OptionalInt.of((int)students.stream().count());
+        if (students == null || students.isEmpty()) {
+            return OptionalInt.empty();
+        }
+        return OptionalInt.of(students.size());
     }
 
     public OptionalInt getMaxAgeOptional(List<Student> students) {

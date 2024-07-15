@@ -1,9 +1,13 @@
 package ro.developmentfactory.students;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,6 +23,7 @@ public class StudentServiceTest {
                 new Student("Dianne", "Ameter", 31, "Female", "Biotech Engineering", 128),
                 new Student("Joss", "Sticks", 23, "Male", "Computer Engineering", 20)
     );
+
 @BeforeEach
     void setUp(){
     studentService = new StudentService();}
@@ -83,6 +88,23 @@ public class StudentServiceTest {
 
     assertTrue(namesByDepartament.isEmpty());
     }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @DisplayName("Group names by departament with null student list")
+    void GroupNamesByDepartment_NullOrEmtyStudentList(List<Student> studentList) {
+    Map<String, Set<String>> namesByDepartament = studentService.getNamesByDepertament(studentList);
+    assertNull(namesByDepartament);
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @DisplayName("Count total number of students with null student list")
+    void CountTotalNumberOfStudents_NullOrEmtyStudentList(List<Student> studentList) {
+    OptionalInt resul = studentService.getTotalStudents(studentList);
+    assertFalse(resul.isPresent());
+    }
+
 
     @Test
     @DisplayName("Count total number of students")

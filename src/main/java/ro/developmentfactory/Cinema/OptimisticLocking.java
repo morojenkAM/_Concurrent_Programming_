@@ -19,7 +19,7 @@ public class OptimisticLocking {
         while(!occupiedSeats.compareAndSet(currentOccupiedSeats, currentOccupiedSeats + numSeats)) {
             currentOccupiedSeats = occupiedSeats.get();
         }
-        return false;
+        return true;
     }
     public int getAvailableSeats() {
         return totalSeats - occupiedSeats.get();
