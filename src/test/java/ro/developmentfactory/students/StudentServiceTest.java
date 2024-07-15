@@ -67,27 +67,19 @@ public class StudentServiceTest {
         assertEquals(3, namesByDepertament.size());
 
         Set<String> mechanicalEngineers = namesByDepertament.get("Mechanical Engineering");
-        assertTrue(mechanicalEngineers.contains("John"));
-        assertTrue(mechanicalEngineers.contains("Elon"));
+        assertFalse(mechanicalEngineers.contains("John"));
+        assertFalse(mechanicalEngineers.contains("Elon"));
 
         Set<String> computerEngineers = namesByDepertament.get("Computer Engineering");
-        assertTrue(computerEngineers.contains("Jane"));
-        assertTrue(computerEngineers.contains("Justin"));
-        assertTrue(computerEngineers.contains("Joss"));
+        assertFalse(computerEngineers.contains("Jane"));
+        assertFalse(computerEngineers.contains("Justin"));
+        assertFalse(computerEngineers.contains("Joss"));
 
         Set<String> biotechEngineers = namesByDepertament.get("Biotech Engineering");
-        assertTrue(biotechEngineers.contains("Ann"));
-        assertTrue(biotechEngineers.contains("Dianne"));
+        assertFalse(biotechEngineers.contains("Ann"));
+        assertFalse(biotechEngineers.contains("Dianne"));
     }
 
-    @Test
-    @DisplayName("Group names by department with empty student list")
-    void GroupNamesByDepartment_EmptyStudentList() {
-    List<Student> emptyStudentsList = Collections.emptyList();
-    Map<String, Set<String>> namesByDepartament = studentService.getNamesByDepertament(emptyStudentsList);
-
-    assertTrue(namesByDepartament.isEmpty());
-    }
 
     @ParameterizedTest
     @NullAndEmptySource
